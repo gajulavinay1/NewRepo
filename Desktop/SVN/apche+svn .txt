@@ -1,0 +1,107 @@
+first of all remove httpd
+
+yum remove httpd
+
+
+and then go to /etc directory
+ 
+
+
+k
+
+second step
+
+yum remove mod_dav_svn subversion
+
+
+steps:
+
+1.yum install httpd
+
+and then start the httpd
+
+service httpd start
+
+whereis httpd  
+
+/etc/httpd 
+
+
+2.yum install mod_dav_svn subversion
+
+cheak it is installed or not
+svn --version
+and 
+whereis subversion subversion: /etc/subversion
+
+
+3. if already installed svn then remove to files in go to 
+     
+   rm -rf svn-access-control-SVN svn-users-SVN
+
+4. and then goto /etc/httpd/conf.d]vi subversion.conf 
+
+add in subversion.conf file
+
+<Location /svn>
+    DAV svn
+    SVNParentPath /var/www/svn
+    AuthType Basic
+    AuthName "subversion repos"
+    AuthUserFile /etc/svn-users-SVN
+    AuthzSVNAccessFile /etc/svn-access-control-SVN
+    Require valid-user
+</Location>
+
+
+:Wq(saveit)
+
+
+5.if already have a useraccount
+
+then type following command: htpasswd -cm /etc/svn-users-SVN Raju
+it asking new passwd:
+and then create file svn-users-SVN Raju in /etc
+
+
+6. go to /etc]vi svn-access-control-SVN
+[/]
+Raju = rw
+:Wq
+
+7.goto cd /var/www/svn
+
+if aleredy create a repo delete it rm -rf REPO
+command is:svnadmin create REPO
+and then
+change the ownership
+command:chown -R apache:apache REPO
+and then restart htppd
+command:service httpd restart
+
+8.go to cd /var/www/svn
+
+go to REPO and then conf and then vi svnserve.conf
+
+uncomment 3 lines
+
+anon-access = read
+auth-access = write
+authz-db = authz
+
+and then save it(:wq)
+k
+
+9.and then go to Raju user
+su - Raju
+type svn co http://10.209.6.21/svn/REPO
+revision 0 it comes
+
+10.type url in browser
+http://10.209.6.21/svn/REPO
+
+
+
+thanku
+bye
+

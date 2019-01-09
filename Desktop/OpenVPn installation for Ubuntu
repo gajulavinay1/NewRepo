@@ -1,0 +1,9 @@
+sudo apt-get install openvpn
+sudo apt-get install openvpn network-manager-openvpn network-manager-openvpn-gnome
+
+copy the ca.crt file in this location /etc/openvpn
+
+create client.ovpn file and click on network settings -- add -- importfrom file -- add the username and password -- add ca.crt file and then click add.
+
+then connect
+
